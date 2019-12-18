@@ -1,0 +1,507 @@
+{
+    "moduleName": "User",
+    "commands": [
+        {
+            "name": "CreateUser",
+            "index": 0,
+            "properties": {
+                "username": "string",
+                "firstName": "string",
+                "lastName": "string",
+                "email": "string",
+                "dob": "Date",
+                "phoneNumber": "string",
+                "password": "string",
+                "avator": "string",
+                "cover": "string"
+            },
+            "dispatches": [
+                0
+            ]
+        },
+        {
+            "name": "UpdateUserInfo",
+            "index": 1,
+            "properties": {
+                "id": "string",
+                "username": "string",
+                "firstName": "string",
+                "lastName": "string",
+                "email": "string",
+                "dob": "Date",
+                "phoneNumber": "string",
+                "avator": "string"
+            },
+            "dispatches": [
+                1
+            ]
+        },
+        {
+            "name": "SigninWithPassword",
+            "index": 2,
+            "properties": {
+                "username": "string",
+                "password": "string"
+            },
+            "dispatches": [
+                2
+            ]
+        },
+        {
+            "name": "SigninWithProvider",
+            "index": 3,
+            "properties": {
+                "provider": "string",
+                "providerData": "any"
+            },
+            "dispatches": [
+                2
+            ]
+        },
+        {
+            "name": "SignOutUser",
+            "index": 4,
+            "properties": {
+                "id": "string"
+            },
+            "dispatches": [
+                3
+            ]
+        },
+        {
+            "name": "DisableUser",
+            "index": 5,
+            "properties": {
+                "id": "string",
+                "active": "boolean"
+            },
+            "dispatches": [
+                4
+            ]
+        },
+        {
+            "name": "EnableUser",
+            "index": 6,
+            "properties": {
+                "id": "string",
+                "active": "boolean"
+            },
+            "dispatches": [
+                5
+            ]
+        },
+        {
+            "name": "ChangeUserRole",
+            "index": 7,
+            "properties": {
+                "id": "string",
+                "role": "string"
+            },
+            "dispatches": [
+                6
+            ]
+        },
+        {
+            "name": "DeleteUser",
+            "index": 8,
+            "properties": {
+                "id": "string"
+            },
+            "dispatches": [
+                7
+            ]
+        },
+        {
+            "name": "SendEmailNotifications",
+            "index": 9,
+            "properties": {
+                "to": "string",
+                "subject": "string",
+                "body": "string"
+            },
+            "dispatches": [
+                8
+            ]
+        },
+        {
+            "name": "ValidateEmail",
+            "index": 10,
+            "properties": {
+                "to": "string",
+                "subject": "string",
+                "body": "string"
+            },
+            "dispatches": [
+                9
+            ]
+        },
+        {
+            "name": "ChangeUserEmail",
+            "index": 11,
+            "properties": {
+                "id": "string",
+                "email": "string"
+            },
+            "dispatches": [10]
+        },
+        {
+            "name": "ChangeUserAvator",
+            "index": 12,
+            "properties": {
+                "id": "string",
+                "avator": "string"
+            },
+            "dispatches": [11]
+        },
+        {
+            "name": "ChangeUserFirstName",
+            "index": 13,
+            "properties": {
+                "id": "string",
+                "firstName": "string"
+            },
+            "dispatches": [12]
+        },
+        {
+            "name": "ChangeUserLastName",
+            "index": 14,
+            "properties": {
+                "id": "string",
+                "lastName": "string"
+            },
+            "dispatches": [13]
+        },
+        {
+            "name": "ChangeUserName",
+            "index": 15,
+            "properties": {
+                "id": "string",
+                "username": "string"
+            },
+            "dispatches": [14]
+        },
+        {
+            "name": "ChangeUserCover",
+            "index": 16,
+            "properties": {
+                "id": "string",
+                "cover": "string"
+            },
+            "dispatches": [15]
+        }
+    ],
+    "events": [
+        {
+            "name": "UserCreated",
+            "index": 0,
+            "properties": {
+                "id": "string",
+                "username": "string",
+                "firstName": "string",
+                "lastName": "string",
+                "email": "string",
+                "dob": "Date",
+                "phoneNumber": "string",
+                "avator": "string",
+                "cover": "string"
+            }
+        },
+        {
+            "name": "UserInfoUpdated",
+            "index": 1,
+            "properties": {
+                "id": "string",
+                "username": "string",
+                "firstName": "string",
+                "lastName": "string",
+                "email": "string",
+                "dob": "Date",
+                "phoneNumber": "string",
+                "avator": "string"
+            }
+        },
+        {
+            "name": "UserSignedIn",
+            "index": 2,
+            "properties": {
+                "id": "string",
+                "timestamp": "Date"
+            }
+        },
+        {
+            "name": "UserSignedOut",
+            "index": 3,
+            "properties": {
+                "id": "string",
+                "timestamp": "Date"
+            }
+        },
+        {
+            "name": "UserDisabled",
+            "index": 4,
+            "properties": {
+                "id": "string",
+                "active": "boolean"
+            }
+        },
+        {
+            "name": "UserEnabled",
+            "index": 5,
+            "properties": {
+                "id": "string",
+                "active": "boolean"
+            }
+        },
+        {
+            "name": "UserRoleChanged",
+            "index": 6,
+            "properties": {
+                "id": "string",
+                "role": "string"
+            }
+        },
+        {
+            "name": "UserDeleted",
+            "index": 7,
+            "properties": {
+                "id": "string"
+            }
+        },
+        {
+            "name": "NotificationEmailSent",
+            "index": 8,
+            "properties": {
+                "id": "string",
+                "email": "string",
+                "timestamp": "Date"
+            }
+        },
+        {
+            "name": "EmailValidated",
+            "index": 9,
+            "properties": {
+                "id": "string",
+                "email": "string",
+                "timestamp": "Date"
+            }
+        },
+        {
+            "name": "UserEmailChanged",
+            "index": 10,
+            "properties": {
+                "email": "string",
+                "timestamp": "Date"
+            }
+        },
+        {
+            "name": "UserAvatorChanged",
+            "index": 11,
+            "properties": {
+                "avator": "string",
+                "timestamp": "Date"
+            }
+        },
+        {
+            "name": "UserFirstNameChanged",
+            "index": 12,
+            "properties": {
+                "firstname": "string",
+                "timestamp": "Date"
+            }
+        },
+        {
+            "name": "UserLastNameChanged",
+            "index": 13,
+            "properties": {
+                "lastname": "string",
+                "timestamp": "Date"
+            }
+        },
+        {
+            "name": "UserNameChanged",
+            "index": 14,
+            "properties": {
+                "username": "string",
+                "timestamp": "Date"
+            }
+        },
+        {
+            "name": "UserCoverChanged",
+            "index": 15,
+            "properties": {
+                "cover": "string",
+                "timestamp": "Date"
+            }
+        }
+    ],
+    "sagas": [
+        {
+            "name": "UserSignedIn",
+            "event": 2,
+            "dispatches": [
+                9
+            ]
+        },
+        {
+            "name": "UserSignedOut",
+            "event": 3,
+            "dispatches": [
+                9
+            ]
+        },
+        {
+            "name": "UserCreated",
+            "event": 0,
+            "dispatches": [
+                10
+            ]
+        },
+        {
+            "name": "UserDeleted",
+            "event": 7,
+            "dispatches": [
+                9
+            ]
+        },
+        {
+            "name": "UserDisabled",
+            "event": 4,
+            "dispatches": [
+                9
+            ]
+        },
+        {
+            "name": "UserEnabled",
+            "event": 5,
+            "dispatches": [
+                9
+            ]
+        },
+        {
+            "name": "UserEmailChanged",
+            "event": 11,
+            "dispatches": [
+                9
+            ]
+        }
+    ],
+    "queries": [
+        {
+            "name": "GetUserById",
+            "index": 0,
+            "returns": "object",
+            "properties": {
+                "id": "string"
+            }
+        },
+        {
+            "name": "GetUserByEmail",
+            "index": 1,
+            "returns": "object",
+            "properties": {
+                "email": "string"
+            }
+        },
+        {
+            "name": "GetUserByPhone",
+            "index": 2,
+            "returns": "object",
+            "properties": {
+                "id": "string"
+            }
+        },
+        {
+            "name": "GetUserByUsername",
+            "index": 1,
+            "returns": "object",
+            "properties": {
+                "username": "string"
+            }
+        },
+        {
+            "name": "SearchUsers",
+            "index": 1,
+            "returns": "array",
+            "properties": {
+                "query": "string",
+                "sort": "string",
+                "cursor": "string",
+                "limit": "number"
+            }
+        },
+        {
+            "name": "GetActiveUsers",
+            "index": 3,
+            "returns": "array",
+            "properties": {
+                "sort": "string",
+                "cursor": "string",
+                "limit": "number"
+            }
+        },
+        {
+            "name": "GetInActiveUsers",
+            "index": 4,
+            "returns": "array",
+            "properties": {
+                "sort": "string",
+                "cursor": "string",
+                "limit": "number"
+            }
+        },
+        {
+            "name": "GetUsers",
+            "index": 5,
+            "returns": "array",
+            "properties": {
+                "sort": "string",
+                "cursor": "string",
+                "limit": "number"
+            }
+        },
+        {
+            "name": "GetFollowers",
+            "index": 6,
+            "returns": "array",
+            "properties": {
+                "sort": "string",
+                "cursor": "string",
+                "limit": "number"
+            }
+        },
+        {
+            "name": "GetFollowings",
+            "index": 7,
+            "returns": "array",
+            "properties": {
+                "sort": "string",
+                "cursor": "string",
+                "limit": "number"
+            }
+        },
+        {
+            "name": "CheckUsernameAvailability",
+            "index": 8,
+            "returns": "any",
+            "properties": {
+                "username": "string"
+            }
+        },
+        {
+            "name": "CheckEmailAvailability",
+            "index": 8,
+            "returns": "any",
+            "properties": {
+                "email": "string"
+            }
+        },
+        {
+            "name": "CheckPasswordStrength",
+            "index": 8,
+            "returns": "any",
+            "properties": {
+                "password": "string"
+            }
+        }
+    ]
+}

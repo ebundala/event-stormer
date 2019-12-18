@@ -1,0 +1,173 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Aggregate",
+    "headerTemplate": "{{self.moduleName}}",
+    "type": "object",
+    "properties": {
+        "moduleName": {
+            "title": "Aggregate name",
+            "type": "string"
+        },
+        "events": {
+            "title": "Events",
+            "type": "array",
+            "format": "tabs",
+            "items": {
+                "headerTemplate": "{{self.name}}",
+                "$ref": "#/definitions/event"
+            }
+        },
+        "commands": {
+            "title": "Commands",
+            "type": "array",
+            "format": "tabs",
+            "items": {
+                "headerTemplate": "{{self.name}}",
+                "$ref": "#/definitions/command"
+            }
+        },
+        "sagas": {
+            "title": "Sagas",
+            "type": "array",
+            "format": "tabs",
+            "items": {
+                "headerTemplate": "{{self.name}}",
+                "$ref": "#/definitions/saga"
+            }
+        },
+        "queries": {
+            "title": "Queries",
+            "type": "array",
+            "format": "tabs",
+            "items": {
+                "headerTemplate": "{{self.name}}",
+                "$ref": "#/definitions/query"
+            }
+        }
+    },
+    "required": [
+        "moduleName",
+        "commands",
+        "events",
+        "sagas",
+        "queries"
+    ],
+    "definitions": {
+        "saga": {
+            "title": "Saga",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "title": "Saga name",
+                    "type": "string",
+                    "watch":{
+                        "ev":"events"
+                    },
+                    "enumSource": [{
+                        "source": "ev",
+                        "title": "{{item.name}}",
+                        "value": "{{i}}"
+                      }]
+                },
+                "props": {
+                    "title": "Saga props",
+                    "type": "object",
+                    "properties": {}
+                },
+                "dispatches": {
+                    "title": "Dispatch commands",
+                    "type": "array",
+                    "items":{
+                        "type":"integer", 
+                        "headerTemplate": "{{i1}}",                      
+                        "watch":{
+                            "ev":"commands"
+                        },
+                        "enumSource": [{
+                            "source": "ev",
+                            "title": "{{item.name}}",
+                            "value": "{{i}}"
+                          }]
+                        
+                    }
+                }
+            },
+            "required": [
+                "name",
+                "props",
+                "dispatches"
+            ]
+        },
+        "event": {
+            "title": "Event",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "title": "Event name",
+                    "type": "string"
+                },
+                "props": {
+                    "title": "Event props",
+                    "type": "object",
+                    "properties": {}
+                }
+            },
+            "required": [
+                "name",
+                "props"
+            ]
+        },
+        "command": {
+            "title": "Command",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "title": "Command Name",
+                    "type": "string"
+                },
+                "props": {
+                    "title": "Props",
+                    "type": "object",
+                    "properties": {}
+                },
+                "dispatches": {
+                    "title": "Dispatch events",
+                    "type": "array",
+                    "items": {
+                        "type": "integer",
+                        "headerTemplate": "{{i1}}",
+                        "watch": {
+                            "ev": "events"
+                        },
+                        "enumSource": [
+                            {
+                                "source": "ev",
+                                "title": "{{item.name}}",
+                                "value": "{{i}}"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "query": {
+            "title": "Query",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "title": "Query name",
+                    "type": "string"
+                },
+                "props": {
+                    "title": "Props",
+                    "type": "object",
+                    "properties": {}
+                }
+            },
+            "required": [
+                "name",
+                "props"
+            ]
+        }
+    }
+}

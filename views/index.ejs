@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title> <%=title%> </title>
+  <script src="./json-editor/dist/jsoneditor.js"></script>
+  <link href="./css/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+  <style>
+    .buttons {
+      margin: 16px;
+    }
+
+    .buttons>button {
+      border: 1px solid black;
+      border-radius: 4px;
+      padding: 8px;
+    }
+
+    .btn {
+      border: 1px solid black;
+      border-radius: 4px;
+      padding: 8px;
+      margin: 8px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    #aggregates {
+      width: 150px;
+      padding: 8px;
+      margin: 8px;
+    }
+
+    .aggrigates {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ctn {
+      display: flex;
+      flex-direction: row;
+    }
+  </style>
+</head>
+
+<body>
+  <h2> <%= title %> </h2>
+  <div class="buttons">
+    <button id="new">New</button>
+
+
+    <button id="save">Save</button>
+    <button id="delete">Delete</button>
+    <button id="restore">Restore</button>
+    <button id="clear">Clear</button>
+    <button id="enable_disable">Disable/Enable</button>
+    <button id="submit">Generate Code</button>
+    <span id="valid_indicator" style="color: green;">valid</span>
+  </div>
+  <div class="ctn">
+    <div id="aggregates">
+      <h2>Modules</h2>
+      <div class="aggregates">
+
+      </div>
+    </div>
+    <div>
+      <div id="editor_holder"></div>
+    </div>
+  </div>
+
+
+
+  <script>
+    // This is the starting value for the editor
+    // We will use this to seed the initial editor 
+    // and to provide a "Restore to Default" button.
+    let state = {
+      active: 0,
+      modules: []
+    };
+
+
+    var starting_value = restoreFromStorage() || {};
+
+    JSONEditor.defaults.options.theme = 'tailwind';
+    JSONEditor.defaults.options.iconlib = "fontawesome4";
+    // Initialize the editor
+    var editor = new JSONEditor(document.getElementById('editor_holder'), {
+      // Enable fetching schemas via ajax
+      ajax: true,
+
+      // The schema for the editor
+      schema: { $ref: "schema2.json" }
+        /* {
+          type: "array",
+          title: "CQRS",
+          format: "tabs",
+          items: {
+            title: "Aggregates",
+            headerTemplate: "{{i}} - {{self.name}}",
+            oneOf: [
+              {
+                
+                title: "Basic Person"
+              },
+              {
+
+                title: "Complex Person"
+              }
+            ]
+          }
+        } */,
+
+      // Seed the form with a starting value
+      startval: starting_value,
+
+      // Disable additional properties
+      // no_additional_properties: true,
+
+      // Require all properties by default
+      // required_by_default: true
+    });
+
+    function saveToStorage() {
+      console.log("saving data...");
+      const data = editor.getValue();
+      if (state.active < state.modules.length && data) {
+        state.modules[state.active] = data;
+      }
+      else if ((state.active === state.modules.length) && data) {
+        state.modules.push(data)
+      }
+
+      // save to localstorage here;
+      window.localStorage.setItem("database", JSON.stringify(state))
+    }
+    function restoreFromStorage() {
+      console.log("Restoring data ")
+      const dataRaw = window.localStorage.getItem("database");
+
+      if (dataRaw)
+        state = JSON.parse(dataRaw);
+      return state.modules[state.active];
+    }
+    function flushStorage() {
+      window.localStorage.clear()
+      state.active = 0;
+      state.modules = []
+      editor.setValue({})
+    }
+    function onModuleClick(i) {
+      state.active = i;
+      editor.setValue(state.modules[i])
+    }
+    function listModules() {
+      const node = document.querySelector('.aggregates');
+      if (node) {
+        const html = state.modules.map((item, i) => {
+          const btn = document.createElement('button');
+          btn.onclick = function (e) {
+            onModuleClick(i)
+          }
+          btn.className = "btn"
+          btn.textContent = item.moduleName
+          return btn;
+        });
+        const div = document.createElement("div");
+        div.className = "aggregates"
+        div.append(...html)
+        node.parentElement.replaceChild(div, node)
+      }
+    }
+    function newModule() {
+      state.active++;
+      editor.setValue({})
+
+    }
+    document.getElementById('new').addEventListener('click', function () {
+      newModule();
+    });
+    // Hook up the submit
+    document.getElementById('save').addEventListener('click', function () {
+      saveToStorage();
+    });
+    document.getElementById('delete').addEventListener('click', function () {
+      state.modules.splice(state.active, 1);
+      state.active = 0;
+      let val = state.modules.length > 0 ? state.modules[0] : {};
+      editor.setValue(val);
+    });
+    // Hook up the submit button to log to the console
+    document.getElementById('submit').addEventListener('click', function () {
+      // Get the value from the editor
+      restoreFromStorage();
+      const schema = state.modules;
+      console.log(schema)
+      const request = new Request('/editor',
+        {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: 'POST', body: JSON.stringify({schema})
+        });
+      fetch(request).then((res) => res.json()).then((res) => {
+        console.log(res)
+      }).catch((e) => {
+        console.log(e)
+      })
+    });
+    // Hook up the Restore to Default button
+    document.getElementById('clear').addEventListener('click', function () {
+      flushStorage()
+    });
+    // Hook up the Restore to Default button
+    document.getElementById('restore').addEventListener('click', function () {
+      editor.setValue(restoreFromStorage() || {});
+    });
+
+    // Hook up the enable/disable button
+    document.getElementById('enable_disable').addEventListener('click', function () {
+      // Enable form
+      if (!editor.isEnabled()) {
+        editor.enable();
+      }
+      // Disable form
+      else {
+        editor.disable();
+      }
+    });
+
+    // Hook up the validation indicator to update its 
+    // status whenever the editor changes
+    editor.on('change', function () {
+      // Get an array of errors from the validator
+      var errors = editor.validate();
+      var indicator = document.getElementById('valid_indicator');
+
+      // Not valid
+      if (errors.length) {
+        indicator.style.color = 'red';
+        indicator.textContent = "not valid";
+      }
+      // Valid
+      else {
+        indicator.style.color = 'green';
+        indicator.textContent = "valid";
+        saveToStorage();
+      }
+      listModules();
+    });
+
+  </script>
+</body>
+
+</html>
