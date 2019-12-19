@@ -9,6 +9,8 @@
   <script src="./json-editor/dist/jsoneditor.js"></script>
   <link href="./css/tailwind.min.css" rel="stylesheet">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+  <script src="./ace-builds/src-noconflict/ace.js"></script>
+
   <style>
     .buttons {
       margin: 16px;
@@ -87,6 +89,8 @@
       modules: []
     };
 
+// Set ACE Editor basePath to same path as CDN Library.
+window.ace.config.set("basePath", "./ace-builds/src-noconflict/");
 
     var starting_value = restoreFromStorage() || {};
 
@@ -188,6 +192,7 @@
     });
     // Hook up the submit
     document.getElementById('save').addEventListener('click', function () {
+      if(validate())
       saveToStorage();
     });
     document.getElementById('delete').addEventListener('click', function () {
@@ -199,6 +204,7 @@
     // Hook up the submit button to log to the console
     document.getElementById('submit').addEventListener('click', function () {
       // Get the value from the editor
+      if(validate()){
       restoreFromStorage();
       const schema = state.modules;
       console.log(schema)
@@ -215,6 +221,7 @@
       }).catch((e) => {
         console.log(e)
       })
+    }
     });
     // Hook up the Restore to Default button
     document.getElementById('clear').addEventListener('click', function () {
@@ -238,9 +245,7 @@
     });
 
     // Hook up the validation indicator to update its 
-    // status whenever the editor changes
-    editor.on('change', function () {
-      // Get an array of errors from the validator
+    function validate(){
       var errors = editor.validate();
       var indicator = document.getElementById('valid_indicator');
 
@@ -255,6 +260,12 @@
         indicator.textContent = "valid";
         saveToStorage();
       }
+      return !(errors.length)
+    }
+    // status whenever the editor changes
+    editor.on('change', function () {
+      // Get an array of errors from the validator
+      validate();
       listModules();
     });
 

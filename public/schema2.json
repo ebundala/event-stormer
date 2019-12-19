@@ -1,6 +1,5 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Aggregate",
     "headerTemplate": "{{self.moduleName}}",
     "type": "object",
     "properties": {
@@ -31,7 +30,7 @@
             "type": "array",
             "format": "tabs",
             "items": {
-                "headerTemplate": "{{self.name}}",
+                "headerTemplate": "{{title}}",
                 "$ref": "#/definitions/saga"
             }
         },
@@ -55,7 +54,7 @@
     "definitions": {
         "saga": {
             "title": "Saga",
-            "type": "object",
+            "type": "object", 
             "properties": {
                 "name": {
                     "title": "Saga name",
@@ -69,17 +68,13 @@
                         "value": "{{i}}"
                       }]
                 },
-                "props": {
-                    "title": "Saga props",
-                    "type": "object",
-                    "properties": {}
-                },
                 "dispatches": {
                     "title": "Dispatch commands",
                     "type": "array",
+                    
                     "items":{
                         "type":"integer", 
-                        "headerTemplate": "{{i1}}",                      
+                        "headerTemplate": "command {{ i0 }}",                    
                         "watch":{
                             "ev":"commands"
                         },
@@ -94,7 +89,6 @@
             },
             "required": [
                 "name",
-                "props",
                 "dispatches"
             ]
         },
@@ -108,8 +102,9 @@
                 },
                 "props": {
                     "title": "Event props",
-                    "type": "object",
-                    "properties": {}
+                    "type": "string",
+                    "format": "json"
+                    
                 }
             },
             "required": [
@@ -127,8 +122,8 @@
                 },
                 "props": {
                     "title": "Props",
-                    "type": "object",
-                    "properties": {}
+                    "type": "string",
+                    "format": "json"
                 },
                 "dispatches": {
                     "title": "Dispatch events",
@@ -158,11 +153,17 @@
                     "title": "Query name",
                     "type": "string"
                 },
+                "returns":{
+                    "title": "Returns",
+                    "type":"string",
+                     "enum": ["object","array","any"]
+                },
                 "props": {
                     "title": "Props",
-                    "type": "object",
-                    "properties": {}
+                    "type": "string",
+                    "format": "json"
                 }
+                
             },
             "required": [
                 "name",

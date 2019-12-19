@@ -13,10 +13,6 @@ export class AppController {
   }
   @Post()
   generateCode(@Body() schema:SchemaDto ): any {
-    
-    //const url = this.appService.generateCode(schema);
-   // if(url)
-   console.log(schema.schema);
-    return schema.schema; //{ url }
+    return this.appService.generateCode(schema);
   }
 }
