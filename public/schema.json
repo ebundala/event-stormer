@@ -120,11 +120,6 @@
                     "title": "Command Name",
                     "type": "string"
                 },
-                "props": {
-                    "title": "Props",
-                    "type": "string",
-                    "format": "json"
-                },
                 "dispatches": {
                     "title": "Dispatch events",
                     "type": "array",
@@ -142,6 +137,11 @@
                             }
                         ]
                     }
+                },
+                "props": {
+                    "title": "Props",
+                    "type": "string",
+                    "format": "json"
                 }
             }
         },
