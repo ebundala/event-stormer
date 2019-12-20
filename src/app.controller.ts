@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body,Render } from '@nestjs/common';
+import { Controller, Get, Post, Body,Render, Header, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import { SchemaDto } from './schemaDto';
 
@@ -12,7 +12,10 @@ export class AppController {
     return this.appService.index();
   }
   @Post()
-  generateCode(@Body() schema:SchemaDto ): any {
-    return this.appService.generateCode(schema);
+  @Header('Content-Type', 'application/zip')
+  @Header('Content-Disposition',`attachment; filename=generated.zip`)
+  async generateCode(@Body() schema:SchemaDto, @Res() res){
+    const file = await this.appService.generateCode(schema);
+    return file.pipe(res);
   }
 }

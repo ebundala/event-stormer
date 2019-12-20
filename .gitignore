@@ -1,8 +1,9 @@
 # compiled output
 /dist
 /node_modules
-/public/json-editor
-/public/ace-builds
+/generated
+/generated.zip
+/schemas.old
 # Logs
 logs
 *.log

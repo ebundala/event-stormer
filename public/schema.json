@@ -1,90 +1,94 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "type": "array",
-    "title": "Aggrigates",
-    "format": "tabs-top",
-    "items": {
-        "title": "Aggregate",
-        "headerTemplate": "{{i}}-{{self.moduleName}}",
-        "type": "object",
-        "properties": {
-            "moduleName": {
-                "title": "Aggregate name",
-                "type": "string"
-            },
-            "events": {
-                "title": "Events",
-                "type": "array", 
-                "format": "tabs",               
-                "items": {
-                    "headerTemplate": "{{self.name}}",
-                    "$ref": "#/definitions/event"
-                }
-            },
-            "commands": {
-                "title": "Commands",
-                "type": "array",
-                "format": "tabs",
-                "items": {
-                    "headerTemplate": "{{self.name}}",
-                    "$ref": "#/definitions/command"
-                }
-            },
-            "sagas": {
-                "title": "Sagas",
-                "type": "array",
-                "format": "tabs",
-                "items": {
-                    "headerTemplate": "{{self.name}}",
-                    "$ref": "#/definitions/saga"
-                }
-            },
-            "queries": {
-                "title": "Queries",
-                "type": "array",
-                "format": "tabs",
-                "items": {
-                    "headerTemplate": "{{self.name}}",
-                    "$ref": "#/definitions/query"
-                }
+    "headerTemplate": "{{self.moduleName}}",
+    "type": "object",
+    "properties": {
+        "moduleName": {
+            "title": "Aggregate name",
+            "type": "string"
+        },
+        "events": {
+            "title": "Events",
+            "type": "array",
+            "format": "tabs",
+            "items": {
+                "headerTemplate": "{{self.name}}",
+                "$ref": "#/definitions/event"
             }
         },
-        "required": [
-            "moduleName",
-            "commands",
-            "events",
-            "sagas",
-            "queries"
-        ]
-        
+        "commands": {
+            "title": "Commands",
+            "type": "array",
+            "format": "tabs",
+            "items": {
+                "headerTemplate": "{{self.name}}",
+                "$ref": "#/definitions/command"
+            }
+        },
+        "sagas": {
+            "title": "Sagas",
+            "type": "array",
+            "format": "tabs",
+            "items": {
+                "headerTemplate": "{{title}}",
+                "$ref": "#/definitions/saga"
+            }
+        },
+        "queries": {
+            "title": "Queries",
+            "type": "array",
+            "format": "tabs",
+            "items": {
+                "headerTemplate": "{{self.name}}",
+                "$ref": "#/definitions/query"
+            }
+        }
     },
+    "required": [
+        "moduleName",
+        "commands",
+        "events",
+        "sagas",
+        "queries"
+    ],
     "definitions": {
         "saga": {
             "title": "Saga",
-            "type": "object",
+            "type": "object", 
             "properties": {
                 "name": {
                     "title": "Saga name",
-                    "type": "string"
-                },
-                "props": {
-                    "title": "Saga props",
-                    "type": "object",
-                    "properties": {}
+                    "type": "string",
+                    "watch":{
+                        "ev":"events"
+                    },
+                    "enumSource": [{
+                        "source": "ev",
+                        "title": "{{item.name}}",
+                        "value": "{{i}}"
+                      }]
                 },
                 "dispatches": {
+                    "title": "Dispatch commands",
                     "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/command",
+                    
+                    "items":{
+                        "type":"integer", 
+                        "headerTemplate": "command {{ i0 }}",                    
                         "watch":{
-                            "cmd":"commands"
-                        }
+                            "ev":"commands"
+                        },
+                        "enumSource": [{
+                            "source": "ev",
+                            "title": "{{item.name}}",
+                            "value": "{{i}}"
+                          }]
+                        
                     }
                 }
             },
             "required": [
                 "name",
-                "props",
                 "dispatches"
             ]
         },
@@ -98,8 +102,9 @@
                 },
                 "props": {
                     "title": "Event props",
-                    "type": "object",
-                    "properties": {}
+                    "type": "string",
+                    "format": "json"
+                    
                 }
             },
             "required": [
@@ -115,38 +120,27 @@
                     "title": "Command Name",
                     "type": "string"
                 },
-                "version":{
-                    "title": "Version",
-                    "type":"string",
-                    "enumSource": [{
-                        "source": [
-                          {
-                            "value": 1,
-                            "title": "One"
-                          },
-                          {
-                            "value": 2,
-                            "title": "Two"
-                          }
-                        ],
-                        "title": "{{item.title}}",
-                        "value": "{{item.value}}"
-                      }]
-                },
                 "props": {
                     "title": "Props",
-                    "type": "object",
-                    "properties": {
-                                                    
-                        }
-                    
+                    "type": "string",
+                    "format": "json"
                 },
                 "dispatches": {
                     "title": "Dispatch events",
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/event"
-                        
+                        "type": "integer",
+                        "headerTemplate": "{{i1}}",
+                        "watch": {
+                            "ev": "events"
+                        },
+                        "enumSource": [
+                            {
+                                "source": "ev",
+                                "title": "{{item.name}}",
+                                "value": "{{i}}"
+                            }
+                        ]
                     }
                 }
             }
@@ -159,11 +153,17 @@
                     "title": "Query name",
                     "type": "string"
                 },
+                "returns":{
+                    "title": "Returns",
+                    "type":"string",
+                     "enum": ["object","array","any"]
+                },
                 "props": {
                     "title": "Props",
-                    "type": "object",
-                    "properties": {}
+                    "type": "string",
+                    "format": "json"
                 }
+                
             },
             "required": [
                 "name",
