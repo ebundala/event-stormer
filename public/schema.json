@@ -12,7 +12,7 @@
             "type": "array",
             "format": "tabs",
             "items": {
-                "headerTemplate": "{{self.name}}",
+                "headerTemplate": "{{self.eventType}}",
                 "$ref": "#/definitions/event"
             }
         },
@@ -54,36 +54,38 @@
     "definitions": {
         "saga": {
             "title": "Saga",
-            "type": "object", 
+            "type": "object",
             "properties": {
                 "name": {
                     "title": "Saga name",
                     "type": "string",
-                    "watch":{
-                        "ev":"events"
+                    "watch": {
+                        "ev": "events"
                     },
-                    "enumSource": [{
-                        "source": "ev",
-                        "title": "{{item.name}}",
-                        "value": "{{i}}"
-                      }]
+                    "enumSource": [
+                        {
+                            "source": "ev",
+                            "title": "{{item.eventType}}",
+                            "value": "{{i}}"
+                        }
+                    ]
                 },
                 "dispatches": {
                     "title": "Dispatch commands",
                     "type": "array",
-                    
-                    "items":{
-                        "type":"integer", 
-                        "headerTemplate": "command {{ i0 }}",                    
-                        "watch":{
-                            "ev":"commands"
+                    "items": {
+                        "type": "integer",
+                        "headerTemplate": "command {{ i0 }}",
+                        "watch": {
+                            "ev": "commands"
                         },
-                        "enumSource": [{
-                            "source": "ev",
-                            "title": "{{item.name}}",
-                            "value": "{{i}}"
-                          }]
-                        
+                        "enumSource": [
+                            {
+                                "source": "ev",
+                                "title": "{{item.name}}",
+                                "value": "{{i}}"
+                            }
+                        ]
                     }
                 }
             },
@@ -96,20 +98,78 @@
             "title": "Event",
             "type": "object",
             "properties": {
-                "name": {
+                "eventType": {
                     "title": "Event name",
                     "type": "string"
                 },
-                "props": {
-                    "title": "Event props",
+                "streamId": {
+                    "title": "streamid",
                     "type": "string",
-                    "format": "json"
+                    "default": "string"
+                },
+                "eventId": {
+                    "title": "eventid",
+                    "type": "string",
+                    "default": "string"
+                },
+                "eventNumber": {
+                    "title": "event number",
+                    "type": "string",
+                    "default": "number"
+                },                
+                "created": {
+                    "title": "created",
+                    "type": "string",
+                    "default": "Date"
+                },
+                "metadata": {
+                    "title": "Metadata",
+                    "type": "string",
+                    "default": "{\"userId\":\"string\"}",
+                    "format": "json",
+                    "options": {
+                        "ace": {
+                          "theme": "ace/theme/vibrant_ink",
+                          "tabSize": 1,
+                          "useSoftTabs": true,
+                          "wrap": true
+                        }
+                    }
                     
+                },
+                "isJson": {
+                    "type": "boolean",
+                    "enum": [
+                        true,
+                        false
+                    ],
+                    "default":true
+                },
+                "data": {
+                    "title": "Data",
+                    "type": "string",
+                    "format": "json",
+                    "default":"{}",
+                    "options": {
+                        "ace": {
+                          "theme": "ace/theme/vibrant_ink",
+                          "tabSize": 1,
+                          "useSoftTabs": true,
+                          "wrap": true
+                        }
+                    }
                 }
+                
             },
             "required": [
-                "name",
-                "props"
+                "eventType",
+                "data",
+                "created",
+                "isJson",
+                "metadata",
+                "eventNumber",
+                "eventId",
+                "streamId"
             ]
         },
         "command": {
@@ -132,7 +192,7 @@
                         "enumSource": [
                             {
                                 "source": "ev",
-                                "title": "{{item.name}}",
+                                "title": "{{item.eventType}}",
                                 "value": "{{i}}"
                             }
                         ]
@@ -141,7 +201,16 @@
                 "props": {
                     "title": "Props",
                     "type": "string",
-                    "format": "json"
+                    "format": "json",
+                    "default":"{}",
+                    "options": {
+                        "ace": {
+                          "theme": "ace/theme/vibrant_ink",
+                          "tabSize": 1,
+                          "useSoftTabs": true,
+                          "wrap": true
+                        }
+                    }
                 }
             }
         },
@@ -153,17 +222,29 @@
                     "title": "Query name",
                     "type": "string"
                 },
-                "returns":{
+                "returns": {
                     "title": "Returns",
-                    "type":"string",
-                     "enum": ["object","array","any"]
+                    "type": "string",
+                    "enum": [
+                        "object",
+                        "array",
+                        "any"
+                    ]
                 },
                 "props": {
                     "title": "Props",
                     "type": "string",
-                    "format": "json"
+                    "format": "json",
+                    "default":"{}",
+                    "options": {
+                        "ace": {
+                          "theme": "ace/theme/vibrant_ink",
+                          "tabSize": 1,
+                          "useSoftTabs": true,
+                          "wrap": true
+                        }
+                    }
                 }
-                
             },
             "required": [
                 "name",

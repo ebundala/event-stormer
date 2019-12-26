@@ -9,6 +9,7 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname,'..','node_modules'));
   app.setBaseViewsDir(join(__dirname, '..', 'views'));
   app.setViewEngine('ejs');
+  
   await app.listen(5000);
 }
 bootstrap();
