@@ -24,7 +24,7 @@
     "@nestjs/common": "^6.7.2",
     "@nestjs/core": "^6.7.2",
     "@nestjs/cqrs": "^6.1.0",
-    "@nestjs/platform-express": "^6.7.2",
+    "@nestjs/platform-express": "^9.2.1",
     "ace-builds": "^1.4.7",
     "ejs": "^3.0.1",
     "enquirer": "^2.3.2",
